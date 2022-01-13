@@ -1,0 +1,30 @@
+{
+    "name": "ghostunicorns/module-remaining-amount-to-free-shipping",
+    "description": "Display the remaining amount to free shipping based on a sales rule",
+    "require": {
+        "magento/magento-composer-installer": "*"
+    },
+    "type": "magento2-module",
+    "authors": [
+        {
+            "name": "Danilo Argentiero",
+            "email": "argentiero.danilo@gmail.com",
+            "homepage": "https://www.linkedin.com/in/daniloargentiero/",
+            "role": "Software Architect"
+        },
+        {
+            "name": "Riccardo Ugolini",
+            "email": "riccardo.ugolini@gmail.com",
+            "homepage": "https://www.linkedin.com/in/riccardougolini/",
+            "role": "Software Architect"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "GhostUnicorns\\RemainingAmountToFreeShipping\\": ""
+        }
+    }
+}

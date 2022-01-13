@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright © Ghost Unicorns snc. All rights reserved.
+  ~ See LICENSE for license details.
+  -->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="cart.summary">
+            <block template="GhostUnicorns_RemainingAmountToFreeShipping::checkout/cart/remaining-amount-to-free-shipping.phtml"
+                   before="-">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        GhostUnicorns\RemainingAmountToFreeShipping\ViewModel\RemainingAmountToFreeShipping
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

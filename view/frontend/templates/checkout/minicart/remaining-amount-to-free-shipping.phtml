@@ -1,0 +1,26 @@
+<?php
+/*
+ * Copyright © Ghost Unicorns snc. All rights reserved.
+ * See LICENSE for license details.
+ */
+?>
+
+<div class="remaining-amount-to-free-shipping-container" data-bind="scope: 'remaining-amount-to-free-shipping'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "remaining-amount-to-free-shipping": {
+                    "component": "GhostUnicorns_RemainingAmountToFreeShipping/js/remaining-amount-to-free-shipping",
+                    "template": "GhostUnicorns_RemainingAmountToFreeShipping/remaining-amount-to-free-shipping"
+                }
+            }
+        }
+    }
+}
+
+</script>

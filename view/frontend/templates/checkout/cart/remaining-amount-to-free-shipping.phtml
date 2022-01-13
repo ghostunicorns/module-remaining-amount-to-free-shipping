@@ -1,0 +1,17 @@
+<?php
+/*
+ * Copyright © Ghost Unicorns snc. All rights reserved.
+ * See LICENSE for license details.
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \GhostUnicorns\RemainingAmountToFreeShipping\ViewModel\RemainingAmountToFreeShipping $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<?php if ($value = $viewModel->getRemainingAmountToFreeShipping()): ?>
+    <div class="remaining-amount-to-free-shipping-container">
+        <p class="remaining-amount-to-free-shipping-sentence">
+            <?= $block->escapeHtml(__('You are missing € %1 for free shipping', $value)); ?>
+        </p>
+    </div>
+<?php endif; ?>
