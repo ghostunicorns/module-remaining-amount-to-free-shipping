@@ -4,15 +4,14 @@
  * See LICENSE for license details.
  */
 
-declare(strict_types=1);
-
-namespace GhostUnicorns\RemainingAmountToFreeShipping\CustomerData;
+namespace GhostUnicorns\RemainingAmountToFreeShipping\Plugin\CustomerData;
 
 use GhostUnicorns\RemainingAmountToFreeShipping\Model\Config;
 use GhostUnicorns\RemainingAmountToFreeShipping\Model\GetRemainingAmountToFreeShipping;
-use Magento\Customer\CustomerData\SectionSourceInterface;
+use Magento\Checkout\CustomerData\Cart;
+use Magento\Framework\Exception\LocalizedException;
 
-class RemainingAmountToFreeShipping implements SectionSourceInterface
+class CartPlugin
 {
     /**
      * @var GetRemainingAmountToFreeShipping
@@ -28,30 +27,31 @@ class RemainingAmountToFreeShipping implements SectionSourceInterface
      * @param GetRemainingAmountToFreeShipping $getRemainingAmountToFreeShipping
      * @param Config $config
      */
-    public function __construct(
-        GetRemainingAmountToFreeShipping $getRemainingAmountToFreeShipping,
-        Config $config
-    ) {
+    public function __construct(GetRemainingAmountToFreeShipping $getRemainingAmountToFreeShipping, Config $config)
+    {
         $this->getRemainingAmountToFreeShipping = $getRemainingAmountToFreeShipping;
         $this->config = $config;
     }
 
     /**
-     * @inheritdoc
+     * @param Cart $subject
+     * @param $result
+     * @return array
+     * @throws LocalizedException
      */
-    public function getSectionData()
+    public function afterGetSectionData(Cart $subject, $result)
     {
         if (!$this->config->isEnabled()) {
-            return [];
+            return $result;
         }
 
         if (!$this->config->getShowInMinicart()) {
-            return [];
+            return $result;
         }
 
         $remainingAmountToFreeShipping = $this->getRemainingAmountToFreeShipping->execute();
-        return [
-            'amount' => $remainingAmountToFreeShipping
-        ];
+
+        $result['remainingAmountToFreeShipping'] = $remainingAmountToFreeShipping;
+        return $result;
     }
 }

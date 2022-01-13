@@ -1,5 +1,5 @@
-<p class="remaining-amount-to-free-shipping-sentence" if="hasRemainingAmountToFreeShipping">
+<p class="remaining-amount-to-free-shipping-sentence" if="cart().remainingAmountToFreeShipping">
     <span data-bind="i18n: 'You are missing'"></span>
-    <span data-bind="text: remainingAmountToFreeShipping().amount"></span>
+    <span data-bind="text: cart().remainingAmountToFreeShipping"></span>
     <span data-bind="i18n: 'for free shipping'"></span>
 </p>

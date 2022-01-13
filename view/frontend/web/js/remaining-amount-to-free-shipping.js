@@ -10,11 +10,7 @@ define([
         'use strict';
         return Component.extend({
             initialize: function () {
-                this.remainingAmountToFreeShipping = customerData.get('remainingAmountToFreeShipping');
-                this.hasRemainingAmountToFreeShipping = this.remainingAmountToFreeShipping().hasOwnProperty('amount') &&
-                    this.remainingAmountToFreeShipping().amount !== '';
-                console.log(this.remainingAmountToFreeShipping());
-                console.log(this.remainingAmountToFreeShipping().amount);
+                this.cart = customerData.get('cart');
 
                 this._super();
             },
