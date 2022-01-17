@@ -37,14 +37,6 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="rule_id" translate="label" type="select" sortOrder="40"
-                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Cart Price Rule</label>
-                    <source_model>GhostUnicorns\RemainingAmountToFreeShipping\Model\Config\Source\Rules</source_model>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                </field>
             </group>
         </section>
     </system>

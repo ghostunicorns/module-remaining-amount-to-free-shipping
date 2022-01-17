@@ -11,15 +11,10 @@ namespace GhostUnicorns\RemainingAmountToFreeShipping\Model;
 use Exception;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\SalesRule\Model\RuleRepository;
+use Magento\Shipping\Model\CarrierFactory;
 
 class GetRemainingAmountToFreeShipping
 {
-    /**
-     * @var RuleRepository
-     */
-    private $ruleRepository;
-
     /**
      * @var Session
      */
@@ -31,18 +26,24 @@ class GetRemainingAmountToFreeShipping
     private $config;
 
     /**
+     * @var CarrierFactory
+     */
+    private $carrierFactory;
+
+    /**
      * @param Session $checkoutSession
-     * @param RuleRepository $ruleRepository
+     * @param CarrierFactory $carrierFactory
      * @param Config $config
      */
     public function __construct(
-        Session $checkoutSession,
-        RuleRepository $ruleRepository,
-        Config $config
-    ) {
+        Session        $checkoutSession,
+        CarrierFactory $carrierFactory,
+        Config         $config
+    )
+    {
         $this->checkoutSession = $checkoutSession;
-        $this->ruleRepository = $ruleRepository;
         $this->config = $config;
+        $this->carrierFactory = $carrierFactory;
     }
 
     /**
@@ -57,25 +58,32 @@ class GetRemainingAmountToFreeShipping
             return '';
         }
         try {
-            $ruleId = $this->config->getRuleId();
-            if (!$ruleId) {
+            $freeShippingSubtotal = $this->config->getFreeShippingSubtotal();
+            if ($freeShippingSubtotal <= 0) {
                 return '';
             }
-            $cartRule = $this->ruleRepository->getById($ruleId);
         } catch (Exception $e) {
             return '';
         }
 
-        if (!$cartRule->getIsActive()) {
+        $itemTotal = $this->checkoutSession->getQuote()->getTotals();
+
+        if (!array_key_exists('shipping', $itemTotal) || !array_key_exists('grand_total', $itemTotal)) {
             return '';
         }
 
-        $freeShippingThreshold = (float)$cartRule->getCondition()->getConditions()[0]->getValue();
-        if (!$freeShippingThreshold) {
-            return '';
+        $shippingFee = $itemTotal['shipping'];
+        $grandTotal = $itemTotal['grand_total'];
+        $quoteTotalWithShipping = (float)$grandTotal->getData('value');
+
+        if ($shippingFee->getData('value') !== null) {
+            $shippingAmount = (float)$shippingFee->getData('value');
+            $remainingAmountToFreeShipping = $quoteTotalWithShipping - $shippingAmount;
+        }else {
+            $remainingAmountToFreeShipping = $quoteTotalWithShipping;
         }
-        $itemTotal = $this->checkoutSession->getQuote()->getGrandTotal();
-        $remainingAmountToFreeShipping = $freeShippingThreshold - $itemTotal;
+
+        $remainingAmountToFreeShipping = $freeShippingSubtotal - $remainingAmountToFreeShipping;
 
         if ($remainingAmountToFreeShipping < 0) {
             return '';

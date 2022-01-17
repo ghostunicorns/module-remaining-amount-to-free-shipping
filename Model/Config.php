@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace GhostUnicorns\RemainingAmountToFreeShipping\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class Config
 {
@@ -21,9 +22,6 @@ class Config
     /** @var string */
     const XML_PATH_GENERAL_SHOW_IN_MINICART = 'ghostunicorns_remainingamounttofreeshipping/general/show_in_minicart';
 
-    /** @var string */
-    const XML_PATH_GENERAL_RULE_ID = 'ghostunicorns_remainingamounttofreeshipping/general/rule_id';
-
     /**
      * @var ScopeConfigInterface
      */
@@ -34,7 +32,8 @@ class Config
      */
     public function __construct(
         ScopeConfigInterface $scopeConfigInterface
-    ) {
+    )
+    {
         $this->scopeConfig = $scopeConfigInterface;
     }
 
@@ -63,10 +62,15 @@ class Config
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getRuleId(): int
+    public function getFreeShippingSubtotal(): float
     {
-        return (int)$this->scopeConfig->getValue(self::XML_PATH_GENERAL_RULE_ID);
+        $shippingSubtotal = $this->scopeConfig->getValue(
+            'carriers/freeshipping/free_shipping_subtotal',
+            ScopeInterface::SCOPE_STORE
+        );
+
+        return !$shippingSubtotal ? 0.0 : (float)$shippingSubtotal;
     }
 }
